@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/somerq/job-exam-final/issues"
   },
-  "homepage": "https://github.com/somerq/job-exam-final#readme"
+  "homepage": "https://github.com/somerq/job-exam-final#readme",
+  "dependencies": {
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0"
+  }
 }
