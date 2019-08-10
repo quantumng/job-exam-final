@@ -6,7 +6,7 @@ module.exports = {
     },
     'postcss-cssnext': {},
     'postcss-px-to-viewport': {
-      viewportWidth: 750,
+      viewportWidth: 360,
       unitPrecision: 3,
       viewportUnit: 'vw',
       selectorBlackList: ['.ignore', '.hairlines'],
