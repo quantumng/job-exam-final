@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/somerq/job-exam-final#readme",
   "dependencies": {
+    "glob": "^7.1.4",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "mongoose": "^5.6.9"
   }
 }

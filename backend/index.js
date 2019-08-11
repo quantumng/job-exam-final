@@ -5,6 +5,13 @@ const path = require('path')
 
 const app = new Koa();
 
+// 数据库相关
+const { connect, initShema } = require('./model')
+;(async () => {
+  await connect()
+  await initShema()
+})()
+
 const router =  new Router()
 const index = require('./router/index')
 const api = require('./router/api')

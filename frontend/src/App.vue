@@ -4,7 +4,7 @@
       <span class="back-btn" v-if="$route.name !== 'home'" @click="() => {$router.go(-1)}">
       </span>
       鲸鱼阅读</div>
-    <Layer class="dialog-layer" />
+    <Layer class="dialog-layer" v-if="0 === 1" />
     <div class="view">
       <router-view/>
     </div>

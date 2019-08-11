@@ -7,7 +7,7 @@ const { resolve } = require('path')
 exports.connect = () => {
   let maxConnectTimes = 0
   return new Promise((resolve, reject) => {
-    mongoose.connect(dbUrl, { useNewUrlParser: true, useCreateIndex: true })
+    mongoose.connect(dbUrl, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
 
     const db = mongoose.connection
 

@@ -70,10 +70,18 @@
 <script>
 export default {
   name: 'VideoTask',
+  props: {
+    taskInfo: {
+      type: Array,
+    },
+  },
   data() {
     return {
 
     };
+  },
+  mounted() {
+    console.log('video task', this.taskInfo);
   },
 };
 </script>

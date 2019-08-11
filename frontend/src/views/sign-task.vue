@@ -63,12 +63,39 @@
 </template>
 
 <script>
+import { taskApi } from '@/api/index';
+
 export default {
   name: 'SignTask',
+  props: {
+    taskInfo: {
+      type: Object,
+    },
+  },
   data() {
     return {
     };
   },
+  mounted() {
+    console.log('sign info', this.taskInfo);
+    if (this.taskInfo && Object.keys(this.taskInfo).length) {
+      const { taskId, username, status } = this.taskInfo;
+      if (status !== 3) {
+        const params = {
+          taskId,
+          username,
+          status: 3,
+        };
+        taskApi.finishTask(params).then((res) => {
+          console.log('res', res);
+          this.$EventBus.$emit('openLottery', true);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    }
+  },
+  methods: {},
 };
 </script>
 

@@ -11,37 +11,53 @@
       </div>
     </div>
     <ul class="all-tasks">
-      <li class="task-item">
+      <li class="task-item" v-if="taskList['12']">
         <img src="@/assets/task_center/center/update.png" alt="" class="task-item-icon">
         <div class="task-item-content">
           <p>更新版本领奖</p>
           <p>可领取20金券！</p>
         </div>
-        <button class="task-item-btn">去更新</button>
+        <button class="task-item-btn" v-if="taskList['12'].status === '1'"
+        @click="finishTask(taskList['12'].username, taskList['12'].taskId, '2')">去更新</button>
+        <button class="task-item-btn" v-else-if="taskList['12'].status === '2'"
+        @click="finishTask(taskList['12'].username, taskList['12'].taskId, '3')">领取</button>
+        <button class="task-item-btn finished" v-else>已领取</button>
       </li>
-      <li class="task-item">
+      <li class="task-item" v-if="taskList['13']">
         <img src="@/assets/task_center/center/free-zone-copy.png" alt="" class="task-item-icon">
         <div class="task-item-content">
           <p>每月福利10元礼包等你拿</p>
           <p>还有N天N小时N分领取</p>
         </div>
-        <button class="task-item-btn">领取预约</button>
+        <button class="task-item-btn" v-if="taskList['13'].status === '1'"
+        @click="finishTask(taskList['13'].username, 13, '2')">领取预约</button>
+        <button class="task-item-btn" v-else-if="taskList['13'].status === '2'"
+        @click="finishTask(taskList['13'].username, 13, '3')">领取</button>
+        <button class="task-item-btn finished" v-else>已领取</button>
       </li>
-      <li class="task-item">
+      <li class="task-item" v-if="taskList['14']">
         <img src="@/assets/task_center/center/free-zone.png" alt="" class="task-item-icon">
         <div class="task-item-content">
           <p>今日免费专区</p>
           <p>买30得60，双倍返还</p>
         </div>
-        <button class="task-item-btn">去看看</button>
+        <button class="task-item-btn" v-if="taskList['14'].status === '1'"
+        @click="finishTask(taskList['14'].username, 14, '2')">去看看</button>
+        <button class="task-item-btn" v-else-if="taskList['14'].status === '2'"
+        @click="finishTask(taskList['14'].username, 14, '3')">领取</button>
+        <button class="task-item-btn finished" v-else>已领取</button>
       </li>
-      <li class="task-item">
+      <li class="task-item" v-if="taskList['15']">
         <img src="@/assets/task_center/center/reading-plan.png" alt="" class="task-item-icon">
         <div class="task-item-content">
           <p>阅读计划</p>
           <p>看这里@好看的免费书等你挑~</p>
         </div>
-        <button class="task-item-btn">去看看</button>
+        <button class="task-item-btn" v-if="taskList['15'].status === '1'"
+        @click="finishTask(taskList['15'].username, 15, '2')">去看看</button>
+        <button class="task-item-btn" v-else-if="taskList['15'].status === '2'"
+        @click="finishTask(taskList['15'].username, 15, '3')">领取</button>
+        <button class="task-item-btn finished" v-else>已领取</button>
       </li>
       <li class="task-item">
         <img src="@/assets/task_center/center/ads.png" alt="" class="task-item-icon">
@@ -56,12 +72,44 @@
 </template>
 
 <script>
+import { taskApi } from '@/api/index';
+
 export default {
   name: 'OtherTask',
+  props: {
+    taskInfo: {
+      type: Array,
+    },
+  },
   data() {
-    return {
-
-    };
+    return {};
+  },
+  created() {
+  },
+  computed: {
+    taskList() {
+      console.log('info', this.taskInfo);
+      const list = [];
+      this.taskInfo.forEach((item) => {
+        list[item.taskId] = item;
+      });
+      return list;
+    },
+  },
+  methods: {
+    finishTask(username, taskId, status) {
+      const params = {
+        username,
+        taskId,
+        status,
+      };
+      taskApi.finishTask(params).then((res) => {
+        console.log('res', res);
+        this.taskList[taskId].status = status;
+      }).catch((err) => {
+        console.log('err', err);
+      });
+    },
   },
 };
 </script>
@@ -147,4 +195,7 @@ export default {
         letter-spacing: 0;
         text-align: center;
         line-height: 12px;
+        &.finished
+          background #EFEFF0
+          color #fff;
 </style>
