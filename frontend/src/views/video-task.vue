@@ -54,7 +54,7 @@
         </li>
       </ul>
       <div class="task-reward">
-        <span>累计有效点击3次可领取5金券</span>
+        <span>累计有效点击6次可领取10金券</span>
         <button>领取</button>
       </div>
       <ul class="task-rule">
@@ -165,7 +165,7 @@ export default {
       color #82848B
       letter-spacing 0
       line-height 13px
-      margin-right 25px
+      margin-right 15px
     button
       width 75px
       height 26px

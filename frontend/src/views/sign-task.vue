@@ -5,7 +5,9 @@
         <span>连续签到1天</span>
         <span>随机可获得鱼蛋</span>
       </div>
-      <button class="sign-zone-btn">签到</button>
+      <button class="sign-zone-btn" v-if="sigeInfo.status === '1'">签到</button>
+      <button class="sign-zone-btn" v-else-if="sigeInfo.status === '2'">领取</button>
+      <button class="sign-zone-btn signed" v-else>已签到</button>
     </div>
     <ul class="sign-calendar">
       <li class="sign-calendar-item">
@@ -63,8 +65,7 @@
 </template>
 
 <script>
-import { taskApi } from '@/api/index';
-
+// import { taskApi } from '@/api/index';
 export default {
   name: 'SignTask',
   props: {
@@ -76,26 +77,22 @@ export default {
     return {
     };
   },
-  mounted() {
-    console.log('sign info', this.taskInfo);
-    if (this.taskInfo && Object.keys(this.taskInfo).length) {
-      const { taskId, username, status } = this.taskInfo;
-      if (status !== 3) {
-        const params = {
-          taskId,
-          username,
-          status: 3,
-        };
-        taskApi.finishTask(params).then((res) => {
-          console.log('res', res);
-          this.$EventBus.$emit('openLottery', true);
-        }).catch((err) => {
-          console.log(err);
-        });
-      }
-    }
+  computed: {
+    sigeInfo() {
+      console.log('sign info', this.taskInfo);
+      return this.taskInfo;
+    },
   },
-  methods: {},
+  mounted() {
+    this.$nextTick(() => {
+      const { taskId, username, status } = this.sigeInfo;
+      if (status && status !== 3) {
+        this.sign(username, taskId);
+      }
+    });
+  },
+  methods: {
+  },
 };
 </script>
 

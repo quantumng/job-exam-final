@@ -36,7 +36,7 @@ export default {
       result.forEach((item) => {
         switch (item.taskId) {
           case 11:
-            this.signTaskInfo = item;
+            this.sign(item);
             break;
           case 16:
           case 17:
@@ -47,6 +47,33 @@ export default {
             break;
         }
       });
+    },
+    async sign(item) {
+      const {
+        taskId,
+        username,
+        status,
+        ...otherData
+      } = item;
+      if (status !== '3') {
+        const params = {
+          taskId,
+          username,
+          status: 3,
+        };
+        taskApi.finishTask(params).then((res) => {
+          console.log('sign res', res);
+          this.signTaskInfo = {
+            taskId,
+            username,
+            status: '3',
+            ...otherData,
+          };
+          this.$EventBus.$emit('openLottery', true);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
     },
   },
 };

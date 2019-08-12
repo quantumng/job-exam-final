@@ -2,6 +2,17 @@ const Router = require('koa-router')
 const router = new Router()
 const mongoose = require('mongoose')
 
+function getWeek() {
+  let d1 = new Date();
+  let d2 = new Date();
+  d2.setMonth(0);
+  d2.setDate(1);
+  let rq = d1 - d2;
+  let days = Math.ceil(rq / (24*60*60*1000));
+  let num = Math.ceil(days / 7);
+  return num;
+}
+
 // router.get('/checkLogin', async (ctx, next) => {
 //   const cookies = ctx.cookies.get('username')
 //   console.log('cookies', cookies)
@@ -120,6 +131,13 @@ router.post('/register', async (ctx, next) => {
     taskList.forEach(async item => {
       const newTask = new Task(item)
       await newTask.save()
+    })
+    const Sign = mongoose.model('Sign')
+    const week = getWeek()
+    const dayArr = [1, 2, 3, 4, 5, 6, 7]
+    dayArr.forEach(async day => {
+      const newSign = new Sign({username, day, week})
+      await newSign.save()
     })
     ctx.body = {
       status: 200,
