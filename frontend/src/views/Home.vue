@@ -34,6 +34,7 @@
 
 <script>
 import { userApi } from '@/api/index';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'home',
@@ -49,6 +50,7 @@ export default {
     this.getList();
   },
   methods: {
+    ...mapActions(['setUsername']),
     async getList() {
       const { result } = await userApi.list();
       console.log('list', result);
@@ -71,7 +73,7 @@ export default {
       };
       userApi.login(params).then((res) => {
         console.log('res', res);
-        // alert(res.message);
+        // this.mapActions()
       });
     },
   },
