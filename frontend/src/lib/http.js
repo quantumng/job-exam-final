@@ -14,7 +14,7 @@ export default {
     if (params !== undefined) {
       configObj.params = params;
     }
-    return axios.get(url, configObj)
+    return axios.get(url, configObj);
   },
   delete(url, params, config) {
     const configObj = {};

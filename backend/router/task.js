@@ -73,4 +73,59 @@ router.post('/finishTask', async (ctx, next) => {
   }
 })
 
+router.get('/lottery', async ctx => {
+  try {
+    const {username} = ctx.request.query
+    const Lottery = mongoose.model('Lottery')
+    let lotterys = await Lottery.find({ username }).sort('createAt')
+    console.log('lotterys', lotterys);
+    const nowTime = Date.now();
+    const needAdd = lotterys.compareDate(nowTime, lotterys[0].createAt)
+    if (needAdd) {
+      const newLottery = new Lottery({username})
+      await newLottery.save()
+      ctx.body = {
+        status: 200,
+        result: newLottery,
+        message: 'success'
+      }
+    } else {
+      ctx.body = {
+        status: 200,
+        result: lotterys[0],
+        message: 'success'
+      }
+    }
+  } catch(err) {
+    console.log(err)
+    ctx.status = 500
+    ctx.body = {
+      status: 500,
+      result: false,
+      message: '获取抽奖信息失败'
+    }
+  }
+})
+
+router.post('/finishLottery', async ctx => {
+  try {
+    const { id, giftId } = ctx.request.body
+    const Lottery = mongoose.model('Lottery')
+    await Lottery.findByIdAndUpdate(id, { reward: giftId })
+    ctx.body = {
+      status: 200,
+      result: true,
+      sucess: '保存成功'
+    }
+  } catch(err) {
+    console.log(err);
+    ctx.status = 500
+    ctx.body = {
+      status: 500,
+      result: false,
+      message: '保存失败'
+    }
+  }
+})
+
 module.exports = router.routes()

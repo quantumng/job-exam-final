@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { userApi } from '@/api/index';
 import { mapActions } from 'vuex';
+import { userApi } from '@/api/index';
 
 export default {
   name: 'home',
