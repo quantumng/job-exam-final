@@ -35,114 +35,126 @@ function getWeek() {
 // })
 
 router.post('/register', async (ctx, next) => {
-  const registerInfo = ctx.request.body
-  const { username } = registerInfo
-  const User = mongoose.model('User')
-  const user = await User.findOne({ username }).exec()
+  try {
+    const registerInfo = ctx.request.body
+    const { username } = registerInfo
+    const User = mongoose.model('User')
+    const user = await User.findOne({ username }).exec()
 
-  if (user) {
+    if (user) {
+      ctx.status = 500
+      ctx.body = {
+        status: 500,
+        result: false,
+        message: '用户名已被注册'
+      }
+    } else {
+      const newUser = new User(registerInfo)
+      newUser.save()
+      const Task = mongoose.model('Task')
+      const taskList = [
+        {
+          taskId: '11',
+          taskType: 'SIGN_TASK',
+          condition: {
+            taskNum: 1,
+          },
+          reward: {},
+          username,
+        },
+        {
+          taskId: '12',
+          taskType: 'UPDATE_TASK',
+          condition: {
+            taskNum: 1,
+          },
+          reward: {
+            coupon: 20
+          },
+          username,
+        },
+        {
+          taskId: '13',
+          taskType: 'LOTTERY_TASK',
+          condition: {
+            taskNum: 1,
+          },
+          reward: {
+            coupon: 10
+          },
+          username,
+        },
+        {
+          taskId: '14',
+          taskType: 'FREE_TASK',
+          condition: {
+            taskNum: 1
+          },
+          reward: {
+            coupon: 10
+          },
+          username,
+        },
+        {
+          taskId: '15',
+          taskType: 'READING_TASK',
+          condition: {
+            taskNum: 1,
+          },
+          reward: {
+            coupon: 10
+          },
+          username,
+        },
+        {
+          taskId: '16',
+          taskType: 'AD_TASK',
+          condition: {
+            taskNum: 3,
+          },
+          reward: {
+            coupon: 5
+          },
+          username,
+        },
+        {
+          taskId: '17',
+          taskType: 'AD_TASK',
+          condition: {
+            taskNum: 6,
+          },
+          reward: {
+            coupon: 10
+          },
+          username,
+        },
+      ]
+      taskList.forEach(async item => {
+        const newTask = new Task(item)
+        await newTask.save()
+      })
+      const Sign = mongoose.model('Sign')
+      const week = getWeek()
+      const dayArr = [1, 2, 3, 4, 5, 6, 7]
+      dayArr.forEach(async day => {
+        const newSign = new Sign({username, day, week})
+        await newSign.save()
+      })
+      const Lottery = mongoose.model('Lottery');
+      new Lottery({username}).save()
+      ctx.body = {
+        status: 200,
+        result: true,
+        message: '注册成功'
+      }
+    }
+  } catch(err) {
+    console.log('reg err', err)
     ctx.status = 500
     ctx.body = {
       status: 500,
       result: false,
-      message: '用户名已被注册'
-    }
-  } else {
-    const newUser = new User(registerInfo)
-    newUser.save()
-    const Task = mongoose.model('Task')
-    const taskList = [
-      {
-        taskId: '11',
-        taskType: 'SIGN_TASK',
-        condition: {
-          taskNum: 1,
-        },
-        reward: {},
-        username,
-      },
-      {
-        taskId: '12',
-        taskType: 'UPDATE_TASK',
-        condition: {
-          taskNum: 1,
-        },
-        reward: {
-          coupon: 20
-        },
-        username,
-      },
-      {
-        taskId: '13',
-        taskType: 'LOTTERY_TASK',
-        condition: {
-          taskNum: 1,
-        },
-        reward: {
-          coupon: 10
-        },
-        username,
-      },
-      {
-        taskId: '14',
-        taskType: 'FREE_TASK',
-        condition: {
-          taskNum: 1
-        },
-        reward: {
-          coupon: 10
-        },
-        username,
-      },
-      {
-        taskId: '15',
-        taskType: 'READING_TASK',
-        condition: {
-          taskNum: 1,
-        },
-        reward: {
-          coupon: 10
-        },
-        username,
-      },
-      {
-        taskId: '16',
-        taskType: 'AD_TASK',
-        condition: {
-          taskNum: 3,
-        },
-        reward: {
-          coupon: 5
-        },
-        username,
-      },
-      {
-        taskId: '17',
-        taskType: 'AD_TASK',
-        condition: {
-          taskNum: 6,
-        },
-        reward: {
-          coupon: 10
-        },
-        username,
-      },
-    ]
-    taskList.forEach(async item => {
-      const newTask = new Task(item)
-      await newTask.save()
-    })
-    const Sign = mongoose.model('Sign')
-    const week = getWeek()
-    const dayArr = [1, 2, 3, 4, 5, 6, 7]
-    dayArr.forEach(async day => {
-      const newSign = new Sign({username, day, week})
-      await newSign.save()
-    })
-    ctx.body = {
-      status: 200,
-      result: true,
-      message: '注册成功'
+      message: '注册失败'
     }
   }
 })

@@ -72,8 +72,8 @@ export default {
         password: this.password,
       };
       userApi.login(params).then((res) => {
-        console.log('res', res);
-        // this.mapActions()
+        console.log('loggin res', res);
+        this.setUsername(res.result.username);
       });
     },
   },

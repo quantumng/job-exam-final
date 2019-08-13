@@ -5,7 +5,6 @@ const Mixed = Schema.Types.Mixed
 const taskSchema = new Schema({
   taskId: {
     type: Number,
-    unique: true,
     required: true
   },
   taskType: {

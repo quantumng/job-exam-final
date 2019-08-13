@@ -21,4 +21,10 @@ export const taskApi = {
   finishTask(params) {
     return http.post(`${taskPath}/finishTask`, params).then(res => res.data);
   },
+  getLottery(params) {
+    return http.get(`${taskPath}/lottery?username=${params}`).then(res => res.data);
+  },
+  finishLottery(params) {
+    return http.post(`${taskPath}/finishLottery`, params).then(res => res.data);
+  },
 };

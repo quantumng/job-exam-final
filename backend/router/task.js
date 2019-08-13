@@ -73,6 +73,12 @@ router.post('/finishTask', async (ctx, next) => {
   }
 })
 
+function compareDate(newval, oldval) {
+    const newTime = new Date(newval)
+    const oldTime = new Date(oldval)
+    const gap = 1000 * 60 *60 * 24
+    return (newTime - oldTime) > gap
+}
 router.get('/lottery', async ctx => {
   try {
     const {username} = ctx.request.query
@@ -80,7 +86,7 @@ router.get('/lottery', async ctx => {
     let lotterys = await Lottery.find({ username }).sort('createAt')
     console.log('lotterys', lotterys);
     const nowTime = Date.now();
-    const needAdd = lotterys.compareDate(nowTime, lotterys[0].createAt)
+    const needAdd = compareDate(nowTime, lotterys[0].createAt)
     if (needAdd) {
       const newLottery = new Lottery({username})
       await newLottery.save()
@@ -109,9 +115,9 @@ router.get('/lottery', async ctx => {
 
 router.post('/finishLottery', async ctx => {
   try {
-    const { id, giftId } = ctx.request.body
+    const { id, giftId, status } = ctx.request.body
     const Lottery = mongoose.model('Lottery')
-    await Lottery.findByIdAndUpdate(id, { reward: giftId })
+    await Lottery.findByIdAndUpdate(id, { reward: giftId, status })
     ctx.body = {
       status: 200,
       result: true,

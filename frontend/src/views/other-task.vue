@@ -3,11 +3,11 @@
     <div class="my-info">
       <div class="my-info-task">
         <h3 class="title">我的任务</h3>
-        <button class="click-btn">1份任务待领取</button>
+        <button class="click-btn" @click="getLottery">1份任务待领取</button>
       </div>
       <div class="my-info-lottery">
         <h3 class="title">鱼蛋换好礼</h3>
-        <button class="click-btn">200鱼蛋</button>
+        <button class="click-btn" @click="finishLottery">200鱼蛋</button>
       </div>
     </div>
     <ul class="all-tasks">
@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { taskApi } from '@/api/index';
 
 export default {
@@ -82,11 +83,14 @@ export default {
     },
   },
   data() {
-    return {};
-  },
-  created() {
+    return {
+      id: '',
+    };
   },
   computed: {
+    ...mapState({
+      username: state => state.username,
+    }),
     taskList() {
       console.log('info', this.taskInfo);
       const list = [];
@@ -110,6 +114,28 @@ export default {
         console.log('err', err);
       });
     },
+    async getLottery() {
+      try {
+        const { result } = await taskApi.getLottery(this.username);
+        console.log('lottery list', result);
+        this.id = result._id;
+        console.log('ids',this.id, result._id)
+      } catch (err) {
+        throw err;
+      }
+    },
+    async finishLottery() {
+      try {
+        const params = {
+          id: this.id,
+          giftId: 2,
+          status: 1,
+        }
+        await taskApi.finishLottery(params)
+      } catch (error) {
+        throw error;
+      }
+    }
   },
 };
 </script>

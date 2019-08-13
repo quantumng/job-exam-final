@@ -18,8 +18,8 @@ const lotterySchema = new Schema({
     type: String
   },
   status: {
-    type: String,
-    default: '0'
+    type: Number,
+    default: 0
   },
   reward: {
     type: String
@@ -45,13 +45,6 @@ lotterySchema.pre('save', next => {
     this.updateAt = Date.now()
   }
   next()
-})
-
-lotterySchema.method('compareDate', function(newval, oldval) {
-    const newTime = new Date(newval)
-    const oldTime = new Date(oldval)
-    const gap = 1000 * 60 *60 * 24
-    return (newTime - oldTime) > gap
 })
 
 mongoose.model('Lottery', lotterySchema)

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import SignTask from './sign-task.vue';
 import OtherTask from './other-task.vue';
 import VideoTask from './video-task.vue';
@@ -26,13 +27,18 @@ export default {
       videoTaskInfo: [],
     };
   },
+  computed: {
+    ...mapState({
+      username: state => state.username,
+    }),
+  },
   created() {
     this.getTasks();
   },
   methods: {
     async getTasks() {
-      const { result } = await taskApi.getTasks('wu');
-      console.log('res', result);
+      const { result } = await taskApi.getTasks(this.username);
+      console.log('task result', result);
       result.forEach((item) => {
         switch (item.taskId) {
           case 11:
