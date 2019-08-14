@@ -119,7 +119,7 @@ export default {
         const { result } = await taskApi.getLottery(this.username);
         console.log('lottery list', result);
         this.id = result._id;
-        console.log('ids',this.id, result._id)
+        console.log('ids', this.id, result._id);
       } catch (err) {
         throw err;
       }
@@ -130,12 +130,12 @@ export default {
           id: this.id,
           giftId: 2,
           status: 1,
-        }
-        await taskApi.finishLottery(params)
+        };
+        await taskApi.finishLottery(params);
       } catch (error) {
         throw error;
       }
-    }
+    },
   },
 };
 </script>

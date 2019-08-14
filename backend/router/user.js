@@ -54,6 +54,17 @@ router.post('/register', async (ctx, next) => {
       const Task = mongoose.model('Task')
       const taskList = [
         {
+          taskId: '10',
+          taskType: 'CHARGE_TASK',
+          condition: {
+            taskNum: 2,
+          },
+          reward: {
+            egg: 300
+          },
+          username,
+        },
+        {
           taskId: '11',
           taskType: 'SIGN_TASK',
           condition: {
@@ -78,6 +89,7 @@ router.post('/register', async (ctx, next) => {
           taskType: 'LOTTERY_TASK',
           condition: {
             taskNum: 1,
+            deadline: Date.parse('2019-08-16 18:00')
           },
           reward: {
             coupon: 10
@@ -137,7 +149,8 @@ router.post('/register', async (ctx, next) => {
       const week = getWeek()
       const dayArr = [1, 2, 3, 4, 5, 6, 7]
       dayArr.forEach(async day => {
-        const newSign = new Sign({username, day, week})
+        const status = (day < 4) && (Math.floor(Math.random() *10 + 1) % 2 === 0) ? '1' : '0'
+        const newSign = new Sign({username, day, week, status})
         await newSign.save()
       })
       const Lottery = mongoose.model('Lottery');

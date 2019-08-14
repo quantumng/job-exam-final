@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 function getReward() {
   const rewards = []
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 8; i++) {
     const reward = {
       id: i,
       num: i % 2 === 0 ? 100 : 50

@@ -25,6 +25,7 @@ router.get('/getUserTask', async (ctx, next) => {
     tasks.forEach(item => {
       if (item.taskId === 11) {
         item._doc['list'] = weekData
+        item._doc['nowTime'] = Date.parse(new Date())
       }
     })
     ctx.body = {

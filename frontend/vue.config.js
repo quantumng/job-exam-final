@@ -2,7 +2,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/': {
-        target: 'http://localhost:3000',
+        target: 'http://api.degebug.cn',
+        // target: 'http://localhost:3000',
         ws: false,
         changeOrigin: true,
       },

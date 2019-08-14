@@ -44,7 +44,7 @@ const signSchema = new Schema({
   reward: {
     type: Mixed,
     default: {
-      coupon: 10
+      coupon: Math.floor(Math.random() * 20 + 1)
     }
   },
   createAt: {
